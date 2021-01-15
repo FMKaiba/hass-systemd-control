@@ -1,0 +1,13 @@
+{
+  "domain": "systemd-control",
+  "name": "systemd-control",
+  "documentation": "https://github.com/fmkaiba/hass-systemd-control",
+  "issue_tracker": "https://github.com/AlexxIT/hass-systemd-control/issues",
+  "dependencies": [],
+  "codeowners": [
+    "@FMKaiba"
+  ],
+  "requirements": [
+    "dbus>=1.2.0"
+  ]
+}

@@ -4,6 +4,8 @@ import voluptuous as vol
 
 from sysdmanager import SystemdManager
 
+from datetime import timedelta
+
 from typing import Callable, Optional
 
 from homeassistant.helpers.typing import (
@@ -34,6 +36,8 @@ from .const import (
     CONF_SERVICES,
     DEFAULT_NAME
 )
+
+SCAN_INTERVAL = timedelta(minutes=10)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -78,7 +82,7 @@ async def async_setup_platform(
         _LOGGER.error("No switches added")
         return False
 
-    async_add_entities(switches)
+    async_add_entities(switches, update_before_add=True)
 
 
 class SystemDSwitch(SwitchEntity):
@@ -101,13 +105,13 @@ class SystemDSwitch(SwitchEntity):
 
     def turn_on(self, **kwargs):
         """Turn On method."""
-        if( SystemdManager().start_unit(self._service) ):
+        if( SystemdManager().start_unit(self._service + ".service") ):
             self._state = STATE_ON
         self.schedule_update_ha_state()
 
     def turn_off(self, **kwargs):
         """Turn Off method."""
-        if( SystemdManager().stop_unit(self._service) ):
+        if( SystemdManager().stop_unit(self._service + ".service") ):
             self._state = STATE_OFF
         self.schedule_update_ha_state()
 
@@ -134,12 +138,12 @@ class SystemDSwitch(SwitchEntity):
     @property
     def should_poll(self):
         """Do not poll."""
-        return False
+        return True
 
-    def update(self):
+    async def async_update(self):
         """Return sensor state."""
         _LOGGER.debug("Updating Device: %s", self._service )
-        if SystemdManager().is_active(self._service):
+        if SystemdManager().is_active(self._service + ".service"):
             self._state = STATE_ON
         else:
             self._state = STATE_OFF

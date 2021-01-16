@@ -4,7 +4,11 @@ import voluptuous as vol
 
 from sysdmanager import SystemdManager
 
-from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.helpers.typing import (
+    HomeAssistantType,
+    ConfigType
+)
+
 from homeassistant.components.switch import (
     ENTITY_ID_FORMAT,
     PLATFORM_SCHEMA,
@@ -20,7 +24,13 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
-from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, CONF_SERVICES, DEFAULT_NAME
+from .const import (
+    DOMAIN,
+    DEFAULT_ICON,
+    CONF_SERVICE,
+    CONF_SERVICES,
+    DEFAULT_NAME
+)
 
 _LOGGER = logging.getLogger(__name__)
 

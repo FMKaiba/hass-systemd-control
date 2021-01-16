@@ -103,13 +103,13 @@ class SystemDSwitch(SwitchEntity):
         """Turn On method."""
         if( SystemdManager().start_unit(self._service) ):
             self._state = STATE_ON
-#        self.schedule_update_ha_state()
+        self.schedule_update_ha_state()
 
     async def async_turn_off(self, **kwargs):
         """Turn Off method."""
         if( SystemdManager().stop_unit(self._service) ):
             self._state = STATE_OFF
-#        self.schedule_update_ha_state()
+        self.schedule_update_ha_state()
 
     @property
     def unique_id(self):
@@ -138,8 +138,9 @@ class SystemDSwitch(SwitchEntity):
 
     async def async_update(self):
         """Return sensor state."""
+        _LOGGER.debug("Updating Device: %s", self._service )
         if SystemdManager().is_active(self._service):
             self._state = STATE_ON
         else:
             self._state = STATE_OFF
-        return False
+        return self._state

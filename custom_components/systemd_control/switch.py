@@ -99,13 +99,13 @@ class SystemDSwitch(SwitchEntity):
         """Return is_on status."""
         return self._state
 
-    async def async_turn_on(self, **kwargs):
+    def turn_on(self, **kwargs):
         """Turn On method."""
         if( SystemdManager().start_unit(self._service) ):
             self._state = STATE_ON
         self.schedule_update_ha_state()
 
-    async def async_turn_off(self, **kwargs):
+    def turn_off(self, **kwargs):
         """Turn Off method."""
         if( SystemdManager().stop_unit(self._service) ):
             self._state = STATE_OFF
@@ -136,7 +136,7 @@ class SystemDSwitch(SwitchEntity):
         """Do not poll."""
         return False
 
-    async def async_update(self):
+    def update(self):
         """Return sensor state."""
         _LOGGER.debug("Updating Device: %s", self._service )
         if SystemdManager().is_active(self._service):

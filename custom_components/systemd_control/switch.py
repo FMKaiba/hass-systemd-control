@@ -4,10 +4,11 @@ import voluptuous as vol
 
 from sysdmanager import SystemdManager
 
+from typing import Callable, Optional
+
 from homeassistant.helpers.typing import (
     HomeAssistantType,
     ConfigType,
-    Callable,
     DiscoveryInfoType
 )
 

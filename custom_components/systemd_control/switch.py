@@ -67,8 +67,6 @@ def setup_platform(hass: HomeAssistantType, config, add_entities, discovery_info
 class SystemDSwitch(SwitchEntity):
     """Representation of Switch Sensor."""
 
-    # pylint: disable=too-many-instance-attributes
-
     def __init__(self, hass, object_id, name, icon, service):
         """Initialize the switch."""
         self._name = name

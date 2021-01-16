@@ -6,7 +6,9 @@ from sysdmanager import SystemdManager
 
 from homeassistant.helpers.typing import (
     HomeAssistantType,
-    ConfigType
+    ConfigType,
+    Callable,
+    DiscoveryInfoType
 )
 
 from homeassistant.components.switch import (

@@ -1,4 +1,4 @@
-"""Platform for Wattio integration testing."""
+ """Platform for Wattio integration testing."""
 import logging
 
 import voluptuous as vol
@@ -40,7 +40,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-def setup_platform(hass: HomeAssistantType, config, add_entities, discovery_info=None):
+async def async_setup_platform(hass: HomeAssistantType, config, async_add_entities, discovery_info=None):
     devices = config.get(CONF_SERVICES, {})
     switches = []
 
@@ -82,17 +82,17 @@ class SystemDSwitch(SwitchEntity):
         """Return is_on status."""
         return self._state
 
-    def turn_on(self, **kwargs):
+    async def async_turn_on(self, **kwargs):
         """Turn On method."""
         if( SystemdManager().start_unit(self._service) ):
             self._state = STATE_ON
-        self.schedule_update_ha_state()
+#        self.schedule_update_ha_state()
 
-    def turn_off(self, **kwargs):
+    async def async_turn_off(self, **kwargs):
         """Turn Off method."""
         if( SystemdManager().stop_unit(self._service) ):
             self._state = STATE_OFF
-        self.schedule_update_ha_state()
+#        self.schedule_update_ha_state()
 
     @property
     def name(self):

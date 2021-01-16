@@ -21,7 +21,7 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
-from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, DEFAULT_NAME
+from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, CONF_SERVICES, DEFAULT_NAME
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,13 +1,13 @@
 {
-  "domain": "systemd-control",
-  "name": "systemd-control",
+  "domain": "systemd_control",
+  "name": "Systemd cControl",
   "documentation": "https://github.com/FMKaiba/hass-systemd-control",
   "issue_tracker": "https://github.com/FMKaiba/hass-systemd-control/issues",
-  "dependencies": [],
   "codeowners": [
     "@FMKaiba"
   ],
   "requirements": [
     "dbus-python>=1.2.0"
+    "
   ]
 }

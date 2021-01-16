@@ -5,18 +5,17 @@ import voluptuous as vol
 
 from sysdmanager import SystemdManager
 
+from homeassistant.helpers.typing import HomeAssistantType
 from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
 
 from homeassistant.const import (
     CONF_NAME,
     CONF_ICON,
     STATE_OFF,
-    STATE_ON,
-    STATE_UNKNOWN
+    STATE_ON
 )
 
 import homeassistant.helpers.config_validation as cv
-from homeassistant.helpers.typing import HomeAssistantType
 
 from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, DEFAULT_NAME
 
@@ -27,9 +26,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Required(CONF_SERVICE): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_ICON, default=DEFAULT_ICON): cv.string,
+        vol.Optional(CONF_ICON, default=DEFAULT_ICON): cv.string
     }
-
 )
 
 async def async_setup_platform(hass: HomeAssistantType, config, async_add_entities, discovery_info=None):

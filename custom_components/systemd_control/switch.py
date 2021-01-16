@@ -1,4 +1,3 @@
- """Platform for Wattio integration testing."""
 import logging
 
 import voluptuous as vol

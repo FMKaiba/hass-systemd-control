@@ -16,6 +16,7 @@ from homeassistant.const import (
 )
 
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers.typing import HomeAssistantType
 
 from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, DEFAULT_NAME
 

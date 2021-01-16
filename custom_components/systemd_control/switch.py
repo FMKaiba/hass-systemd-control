@@ -112,6 +112,11 @@ class SystemDSwitch(SwitchEntity):
 #        self.schedule_update_ha_state()
 
     @property
+    def unique_id(self):
+        """Return a unique, Home Assistant friendly identifier for this entity."""
+        return f"{self.entity_id}_systemd"
+
+    @property
     def name(self):
         """Return the name of the sensor."""
         return self._name

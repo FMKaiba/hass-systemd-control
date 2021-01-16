@@ -112,7 +112,7 @@ class SystemDSwitch(SwitchEntity):
     def turn_off(self, **kwargs):
         """Turn Off method."""
         if( SystemdManager().stop_unit(self._service + ".service") ):
-            self._state = STATE_OFF
+            self._state = False
         self.schedule_update_ha_state()
 
     @property
@@ -146,5 +146,5 @@ class SystemDSwitch(SwitchEntity):
         if SystemdManager().is_active(self._service + ".service"):
             self._state = STATE_ON
         else:
-            self._state = STATE_OFF
+            self._state = False
         return self._state

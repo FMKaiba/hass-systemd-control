@@ -5,8 +5,7 @@ import voluptuous as vol
 
 from sysdmanager import SystemdManager
 
-try:
-    from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
+from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
 
 from homeassistant.const import (
     CONF_NAME,

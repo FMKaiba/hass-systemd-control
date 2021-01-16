@@ -9,6 +9,7 @@ from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
 
 from homeassistant.const import (
     CONF_NAME,
+    CONF_ICON,
     STATE_OFF,
     STATE_ON,
     STATE_UNKNOWN

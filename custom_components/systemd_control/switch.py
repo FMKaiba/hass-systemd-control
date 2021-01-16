@@ -30,7 +30,7 @@ UNIT_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_SERVICE): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_ICON, default=DEFAULT_ICON): cv.string
+        vol.Optional(CONF_ICON, default=DEFAULT_ICON): cv.string,
     }
 )
 
@@ -40,7 +40,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-async def async_setup_platform(hass: HomeAssistantType, config, async_add_entities, discovery_info=None):
+def setup_platform(hass: HomeAssistantType, config, add_entities, discovery_info=None):
     devices = config.get(CONF_SERVICES, {})
     switches = []
 
@@ -83,15 +83,17 @@ class SystemDSwitch(SwitchEntity):
         """Return is_on status."""
         return self._state
 
-    async def async_turn_on(self):
+    def turn_on(self, **kwargs):
         """Turn On method."""
         if( SystemdManager().start_unit(self._service) ):
             self._state = STATE_ON
+        self.schedule_update_ha_state()
 
-    async def async_turn_off(self):
+    def turn_off(self, **kwargs):
         """Turn Off method."""
         if( SystemdManager().stop_unit(self._service) ):
             self._state = STATE_OFF
+        self.schedule_update_ha_state()
 
     @property
     def name(self):

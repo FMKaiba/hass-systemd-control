@@ -45,11 +45,12 @@ def setup_platform(hass: HomeAssistantType, config, add_entities, discovery_info
     switches = []
 
     for object_id, device_config in devices.items():
+        name = device_config.get(CONF_NAME, object_id )
         switches.append(
             SystemDSwitch(
                 hass,
                 object_id,
-                device_config.get(CONF_NAME, object_id ),
+                name,
                 device_config.get(CONF_ICON, object_id ),
                 device_config.get(CONF_SERVICE, object_id )
             )

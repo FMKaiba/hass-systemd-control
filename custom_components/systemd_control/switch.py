@@ -6,7 +6,11 @@ import voluptuous as vol
 from sysdmanager import SystemdManager
 
 from homeassistant.helpers.typing import HomeAssistantType
-from homeassistant.components.switch import PLATFORM_SCHEMA, SwitchEntity
+from homeassistant.components.switch import (
+    ENTITY_ID_FORMAT,
+    PLATFORM_SCHEMA,
+    SwitchEntity
+)
 
 from homeassistant.const import (
     CONF_NAME,
@@ -22,7 +26,7 @@ from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, DEFAULT_NAME
 _LOGGER = logging.getLogger(__name__)
 
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+UNIT_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_SERVICE): cv.string,
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
@@ -30,14 +34,33 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
-async def async_setup_platform(hass: HomeAssistantType, config, async_add_entities, discovery_info=None):
-    service = config[CONF_SERVICE]
-    name = config[CONF_NAME]
-    icon = config[CONF_ICON]
-    
-    _LOGGER.debug("Adding device: %s", name )
+PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
+    {
+        vol.Required(CONF_SERVICES): vol.Schema({cv.slug: UNIT_SCHEMA}),
+    }
+)
 
-    async_add_entities([SystemDSwitch( name, icon, service )])
+async def async_setup_platform(hass: HomeAssistantType, config, async_add_entities, discovery_info=None):
+    devices = config.get(CONF_SERVICES, {})
+    switches = []
+
+    for object_id, device_config in devices.items():
+        switches.append(
+            SystemDSwitch(
+                hass,
+                object_id,
+                device_config.get(CONF_NAME, object_id ),
+                device_config.get(CONF_ICON, object_id ),
+                device_config.get(CONF_SERVICE, object_id )
+            )
+        )
+        _LOGGER.debug("Adding device: %s", name )
+
+    if not switches:
+        _LOGGER.error("No switches added")
+        return False
+
+    async_add_entities(switches)
 
 
 class SystemDSwitch(SwitchEntity):
@@ -45,9 +68,11 @@ class SystemDSwitch(SwitchEntity):
 
     # pylint: disable=too-many-instance-attributes
 
-    def __init__(self, name, icon, service):
+    def __init__(self, hass, object_id, name, icon, service):
         """Initialize the switch."""
         self._name = name
+        self._hass = hass
+        self.entity_id = ENTITY_ID_FORMAT.format(object_id)
         self._state = False
         self._icon = icon
         self._service = service
@@ -82,6 +107,11 @@ class SystemDSwitch(SwitchEntity):
     def available(self):
         """Return availability."""
         return self._available
+
+    @property
+    def should_poll(self):
+        """Do not poll."""
+        return False
 
     async def async_update(self):
         """Return sensor state."""

@@ -6,5 +6,6 @@ DEFAULT_ICON = "mdi:power-socket-eu"
 
 #config
 CONF_SERVICE = "service"
+CONF_SERVICES = "services"
 
 DEFAULT_NAME = "Systemd Service"

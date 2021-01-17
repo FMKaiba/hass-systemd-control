@@ -11,31 +11,20 @@ from typing import Callable, Optional
 from homeassistant.helpers.typing import (
     HomeAssistantType,
     ConfigType,
-    DiscoveryInfoType
+    DiscoveryInfoType,
 )
 
 from homeassistant.components.switch import (
     ENTITY_ID_FORMAT,
     PLATFORM_SCHEMA,
-    SwitchEntity
+    SwitchEntity,
 )
 
-from homeassistant.const import (
-    CONF_NAME,
-    CONF_ICON,
-    STATE_OFF,
-    STATE_ON
-)
+from homeassistant.const import CONF_NAME, CONF_ICON, STATE_OFF, STATE_ON
 
 import homeassistant.helpers.config_validation as cv
 
-from .const import (
-    DOMAIN,
-    DEFAULT_ICON,
-    CONF_SERVICE,
-    CONF_SERVICES,
-    DEFAULT_NAME
-)
+from .const import DOMAIN, DEFAULT_ICON, CONF_SERVICE, CONF_SERVICES, DEFAULT_NAME
 
 SCAN_INTERVAL = timedelta(minutes=10)
 
@@ -56,6 +45,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     }
 )
 
+
 async def async_setup_platform(
     hass: HomeAssistantType,
     config: ConfigType,
@@ -66,17 +56,17 @@ async def async_setup_platform(
     switches = []
 
     for object_id, device_config in devices.items():
-        name = device_config.get(CONF_NAME, object_id )
+        name = device_config.get(CONF_NAME, object_id)
         switches.append(
             SystemDSwitch(
                 hass,
                 object_id,
                 name,
-                device_config.get(CONF_ICON, object_id ),
-                device_config.get(CONF_SERVICE, object_id )
+                device_config.get(CONF_ICON, object_id),
+                device_config.get(CONF_SERVICE, object_id),
             )
         )
-        _LOGGER.debug("Adding device: %s", name )
+        _LOGGER.debug("Adding device: %s", name)
 
     if not switches:
         _LOGGER.error("No switches added")
@@ -105,13 +95,13 @@ class SystemDSwitch(SwitchEntity):
 
     def turn_on(self, **kwargs):
         """Turn On method."""
-        if( SystemdManager().start_unit(self._service + ".service") ):
+        if SystemdManager().start_unit(self._service + ".service"):
             self._state = STATE_ON
         self.schedule_update_ha_state()
 
     def turn_off(self, **kwargs):
         """Turn Off method."""
-        if( SystemdManager().stop_unit(self._service + ".service") ):
+        if SystemdManager().stop_unit(self._service + ".service"):
             self._state = False
         self.schedule_update_ha_state()
 
@@ -142,7 +132,7 @@ class SystemDSwitch(SwitchEntity):
 
     async def async_update(self):
         """Return sensor state."""
-        _LOGGER.debug("Updating Device: %s", self._service )
+        _LOGGER.debug("Updating Device: %s", self._service)
         if SystemdManager().is_active(self._service + ".service"):
             self._state = STATE_ON
         else:

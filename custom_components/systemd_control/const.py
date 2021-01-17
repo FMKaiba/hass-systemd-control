@@ -4,7 +4,7 @@ VERSION = "0.1"
 # Icons
 DEFAULT_ICON = "mdi:file-tree"
 
-#config
+# config
 CONF_SERVICE = "service"
 CONF_SERVICES = "services"
 

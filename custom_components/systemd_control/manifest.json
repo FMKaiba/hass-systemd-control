@@ -3,6 +3,7 @@
   "name": "Systemd Control",
   "documentation": "https://github.com/FMKaiba/hass-systemd-control",
   "issue_tracker": "https://github.com/FMKaiba/hass-systemd-control/issues",
+  "version": "1.0",
   "codeowners": [
     "@FMKaiba"
   ],
